@@ -81,7 +81,6 @@
 
 <body class="bg-gray-900 text-white">
     <div class="container-fluid">
-        <!-- Barra Lateral de Navegação -->
         <div class="navigation">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
@@ -159,9 +158,7 @@
             </nav>
         </div>
 
-        <!-- Conteúdo Principal -->
         <div class="main">
-            <!-- Topbar -->
             <div class="topbar">
                 <div class="toggle">
                     <ion-icon name="menu-outline"></ion-icon>
@@ -174,7 +171,6 @@
                 </div>
             </div>
 
-            <!-- Formulário de Edição de Serviço -->
             <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; margin-left: 300px; margin-right: auto; margin-top: 30px; margin-bottom: 50px;">
                 <div class="form-container">
                     <h1 class="text-center">Editar Serviço</h1>
@@ -237,6 +233,17 @@
                 return confirm("Você tem certeza que deseja atualizar este serviço?");
             }
         </script>
+        <script>
+        Inputmask({
+            alias: 'numeric',
+            groupSeparator: '.',
+            radixPoint: ',',
+            digits: 2,
+            autoGroup: true,
+            allowMinus: false,
+            placeholder: '00,00',
+        }).mask('#preco');
+    </script>
 </body>
 
 </html>

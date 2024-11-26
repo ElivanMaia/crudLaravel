@@ -200,18 +200,16 @@
                         </div>
 
                         <div class="mb-3">
-    <label for="foto" class="form-label">Foto</label>
-    <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                            <label for="foto" class="form-label">Foto</label>
+                            <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
 
-    @if($funcionario->foto)
-    <div class="mt-3">
-        <img src="{{ Storage::url($funcionario->foto) }}" alt="Foto do Funcionário"
-            class="img-fluid rounded-lg" style="max-width: 150px; max-height: 150px; object-fit: cover;">
-    </div>
-    @endif
-</div>
-
-
+                            @if($funcionario->foto)
+                            <div class="mt-3">
+                                <img src="{{ Storage::url($funcionario->foto) }}" alt="Foto do Funcionário"
+                                    class="img-fluid rounded-lg" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                            </div>
+                            @endif
+                        </div>
 
                         <div class="mb-3">
                             <label for="frase_pessoal" class="form-label">Frase Pessoal</label>

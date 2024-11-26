@@ -12,9 +12,6 @@
 </head>
 
 <body class="bg-gray-900 text-white">
-@section('content')
-@include('layouts.navigation')
-
     <div class="container mx-auto p-6 max-w-2xl">
         <h1 class="text-center text-3xl font-bold mb-6">Editar Agendamento</h1>
 
