@@ -5,79 +5,238 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Editar Serviço</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEJfJ6lqz5HTqFw5g77RE9aH8F4OglsSoSxsRtFf0a95e1GjfpZ2tPEHcmob7" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .logo-img {
+            width: 65px;
+            height: auto;
+        }
+
+        .form-container {
+            background-color: var(--blue);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: white;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .form-container h1 {
+            margin-bottom: 30px;
+        }
+
+        .form-container .form-label {
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .form-container .form-control {
+            border-radius: 5px;
+            padding: 0.75rem;
+            font-size: 1rem;
+            margin-top: 0;
+            width: 100%;
+        }
+
+        .form-container .mb-3 {
+            margin-bottom: 20px;
+        }
+
+        .form-container .btn-warning {
+            background-color: white;
+            color: var(--blue);
+            border: none;
+            font-size: 1rem;
+            padding: 0.75rem;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            margin-top: 20px;
+        }
+
+        .form-container .btn-warning:hover {
+            background-color: #0062cc;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                margin: 15px;
+                padding: 15px;
+            }
+
+            .form-container .form-label {
+                font-size: 1rem;
+            }
+
+            .form-container .form-control {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-gray-900 text-white">
-    <div class="container mx-auto p-6 max-w-2xl">
-        <h1 class="text-center text-3xl font-bold mb-6">Editar Serviço</h1>
-
-        @if($errors->any())
-        <div id="error-alert" class="bg-red-500 text-white p-4 rounded mb-4 flex justify-between items-start">
-            <ul>
-                @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-            <button onclick="document.getElementById('error-alert').style.display='none'" class="text-white text-2xl font-bold ml-4 px-2 py-1 rounded">
-                &times;
-            </button>
-        </div>
-        @endif
-
-
-        <form action="{{ route('servicos.update', $servico->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-
-            <div class="mb-4">
-                <label for="nome_servico" class="block text-sm font-semibold text-gray-300">Nome do Serviço</label>
-                <input type="text" name="nome_servico" id="nome_servico"
-                    class="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white"
-                    value="{{ old('nome_servico', $servico->nome_servico) }}" placeholder="Nome do serviço" required>
-            </div>
-
-            <div class="mb-4">
-                <label for="preco" class="block text-sm font-semibold text-gray-300">Preço</label>
-                <input type="number" step="0.01" name="preco" id="preco"
-                    class="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white"
-                    value="{{ old('preco', $servico->preco) }}" placeholder="Preço do serviço" required>
-            </div>
-
-            <div class="mb-4">
-                <label for="descricao" class="block text-sm font-semibold text-gray-300">Descrição</label>
-                <textarea name="descricao" id="descricao"
-                    class="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white"
-                    placeholder="Descrição do serviço">{{ old('descricao', $servico->descricao) }}</textarea>
-            </div>
-
-            <div class="mb-4">
-                <label for="imagem" class="block text-sm font-semibold text-gray-300">Imagem</label>
-                <input type="file" name="imagem" id="imagem"
-                    class="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white">
-                @if($servico->imagem)
-                <div class="mt-4">
-                    <img src="{{ Storage::url($servico->imagem) }}" alt="Imagem do Serviço" class="w-32 h-32 object-cover rounded-lg">
+    <div class="container-fluid">
+        <!-- Barra Lateral de Navegação -->
+        <div class="navigation">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <ul class="navbar-nav">
+                        <li>
+                            <a href="#">
+                                <div class="h-5 w-5">
+                                    <img src="{{ asset('assets/imgs/logoReal.png') }}" alt="Logo" class="img-fluid logo-img">
+                                </div>
+                                <span class="title">Barba & Navalha</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('admin') }}">
+                                <span class="icon">
+                                    <ion-icon name="home-outline"></ion-icon>
+                                </span>
+                                <span class="title">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('usuarios.index') }}">
+                                <span class="icon">
+                                    <ion-icon name="person-outline"></ion-icon>
+                                </span>
+                                <span class="title">Clientes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('agendamentos.index') }}">
+                                <span class="icon">
+                                    <ion-icon name="calendar-outline"></ion-icon>
+                                </span>
+                                <span class="title">Agendamentos</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('funcionarios.index') }}">
+                                <span class="icon">
+                                    <ion-icon name="people-circle-outline"></ion-icon>
+                                </span>
+                                <span class="title">Funcionários</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('servicos.index') }}">
+                                <span class="icon">
+                                    <ion-icon name="construct-outline"></ion-icon>
+                                </span>
+                                <span class="title">Serviços</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('feedbacks.index') }}">
+                                <span class="icon">
+                                    <ion-icon name="chatbubble-outline"></ion-icon>
+                                </span>
+                                <span class="title">Feedbacks</span>
+                            </a>
+                        </li>
+                        <hr>
+                        <li class="logout">
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" class="dropdown-item">
+                                    <span class="icon">
+                                        <ion-icon name="log-out-outline"></ion-icon>
+                                    </span>
+                                    <span class="title">Sair</span>
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
                 </div>
-                @endif
-            </div>
-
-            <div class="mb-4 text-center">
-                <button type="submit" class="bg-yellow-600 text-white px-6 py-2 rounded hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500" onclick="return confirmUpdate()">Atualizar Serviço</button>
-            </div>
-        </form>
-
-        <div class="text-center">
-            <a href="{{ route('servicos.index') }}" class="text-blue-500 hover:text-blue-700">Voltar para a lista de serviços</a>
+            </nav>
         </div>
-    </div>
 
-    <script>
-        function confirmUpdate() {
-            var result = confirm("Você tem certeza que deseja atualizar este serviço?");
-            return result;
-        }
-    </script>
+        <!-- Conteúdo Principal -->
+        <div class="main">
+            <!-- Topbar -->
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+                <div class="user">
+                    <div class="user-info">
+                        <span class="username">{{ Auth::user()->name }}</span>
+                        <i class="fas fa-user-circle user-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulário de Edição de Serviço -->
+            <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; margin-left: 300px; margin-right: auto; margin-top: 30px; margin-bottom: 50px;">
+                <div class="form-container">
+                    <h1 class="text-center">Editar Serviço</h1>
+
+                    @if($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
+                    <form action="{{ route('servicos.update', $servico->id) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+
+                        <div class="mb-3">
+                            <label for="nome_servico" class="form-label">Nome do Serviço</label>
+                            <input type="text" name="nome_servico" id="nome_servico" value="{{ $servico->nome_servico }}" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="preco" class="form-label">Preço</label>
+                            <input type="number" name="preco" id="preco" value="{{ $servico->preco }}" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="descricao" class="form-label">Descrição</label>
+                            <textarea name="descricao" id="descricao" rows="4" class="form-control" required>{{ $servico->descricao }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="imagem" class="form-label">Imagem</label>
+                            <input type="file" name="imagem" id="imagem" class="form-control" accept="image/*">
+
+                            @if($servico->imagem)
+                            <div class="mt-3">
+                                <img src="{{ Storage::url($servico->imagem) }}" alt="Imagem do Serviço" class="img-fluid rounded-lg" style="max-width: 150px; max-height: 150px; object-fit: cover;">
+                            </div>
+                            @endif
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-warning w-100">Atualizar Serviço</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ asset('assets/js/main.js') }}"></script>
+        <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pzjw8f+ua7Kw1TIq0Hi60EuAT5viDO+Kd8zFDE6kWiwKrAtmO5NSKzqUjcJXsR27w" crossorigin="anonymous"></script>
+        <script>
+            function confirmUpdate() {
+                return confirm("Você tem certeza que deseja atualizar este serviço?");
+            }
+        </script>
 </body>
 
 </html>
